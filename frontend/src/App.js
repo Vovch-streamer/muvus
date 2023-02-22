@@ -1,35 +1,34 @@
-import { useState, useEffect } from 'react'
+import { useQuery, gql } from '@apollo/client';
+import { useState, useEffect, useCallback } from 'react'
 
 import './App.css';
 
-const App = () => {
-  const [movies, setMovies] = useState([]);
-  const [randomMovie, setRandomMovie] = useState('');
-
-  const selectRandomMovie = () => {
-    const randomIndex = Math.ceil(Math.random() * movies.length);
-
-    setRandomMovie(movies[randomIndex]);
+const getMoviesQuery = gql`
+  query GetMovies {
+    movies {
+      name
+    }
   }
+`;
+
+const App = () => {
+  const [randomMovie, setRandomMovie] = useState('');
+  const { loading, error, data: moviesData } = useQuery(getMoviesQuery);
+
+  const selectRandomMovie = useCallback(() => {
+    const randomIndex = Math.ceil(Math.random() * moviesData.movies.length);
+
+    setRandomMovie(moviesData.movies[randomIndex]);
+  }, [moviesData]);
 
   useEffect(() => {
-    fetch('/graphql', {
-      method: 'POST',
-      body: JSON.stringify({ "query": "query ExampleQuery {\n  movies {\n    name\n  }\n}\n", "variables": {}, "operationName": "ExampleQuery" }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-      .then(data => data.json())
-      .then((parsed) => setMovies(parsed.data.movies))
-      .catch((error) => console.log('error getting movies', error));
-  }, [])
-
-  useEffect(() => {
-    if (movies?.length) {
+    if (moviesData?.movies.length) {
       selectRandomMovie();
     }
-  }, [movies])
+  }, [moviesData, selectRandomMovie])
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
 
   return (
     <>
@@ -48,7 +47,7 @@ const App = () => {
             </tr>
           </thead>
           <tbody>
-            {movies.map((movie, i) => (
+            {moviesData?.movies.map((movie, i) => (
               <tr key={i}>
                 <td className="movie-list--cell">{movie.name}</td>
               </tr>
