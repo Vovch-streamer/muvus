@@ -32,8 +32,8 @@ jobs:
       working-directory: './frontend'
     - run: npm test
       working-directory: './frontend'
-    - run: npm ci
-      working-directory: './backend'
+    # - run: npm ci
+    #   working-directory: './backend'
 
     - name: Configure SSH
       run: |
