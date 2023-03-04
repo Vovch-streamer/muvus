@@ -32,8 +32,6 @@ jobs:
       working-directory: './frontend'
     - run: npm test
       working-directory: './frontend'
-    # - run: npm ci
-    #   working-directory: './backend'
 
     - name: Configure SSH
       run: |
@@ -59,6 +57,7 @@ jobs:
 
         ssh staging 'rm -rf /var/www/backend'
         scp -r backend staging:/var/www/backend
+        ssh staging 'npm ci --prefix /var/www/backend/'
 
     - name: Restart back-end
       run: ssh staging 'pm2 restart index'
