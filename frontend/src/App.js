@@ -1,22 +1,15 @@
-import { useQuery, gql } from '@apollo/client';
-import { useState, useEffect, useCallback } from 'react'
+import { useQuery } from "@apollo/client";
+import { useState, useEffect, useCallback } from "react";
+import { GET_MOVIES_QUERY } from "./graphql/queries/getMovies.js";
 
-import './App.css';
-
-const getMoviesQuery = gql`
-  query GetMovies {
-    movies {
-      name
-    }
-  }
-`;
+import "./App.css";
 
 const App = () => {
-  const [randomMovie, setRandomMovie] = useState('');
-  const { loading, error, data: moviesData } = useQuery(getMoviesQuery);
+  const [randomMovie, setRandomMovie] = useState("");
+  const { loading, error, data: moviesData } = useQuery(GET_MOVIES_QUERY);
 
   const selectRandomMovie = useCallback(() => {
-    const randomIndex = Math.ceil(Math.random() * moviesData.movies.length);
+    const randomIndex = Math.floor(Math.random() * moviesData.movies.length);
 
     setRandomMovie(moviesData.movies[randomIndex]);
   }, [moviesData]);
@@ -25,7 +18,7 @@ const App = () => {
     if (moviesData?.movies.length) {
       selectRandomMovie();
     }
-  }, [moviesData, selectRandomMovie])
+  }, [moviesData, selectRandomMovie]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
@@ -36,10 +29,10 @@ const App = () => {
         <h1 className="app--heading">Muvus</h1>
       </header>
       <main className="app--body">
-        <button onClick={selectRandomMovie} className="random-selector--button">Random</button>
-        <section className="random-selector--movie">
-          {randomMovie.name}
-        </section>
+        <button onClick={selectRandomMovie} className="random-selector--button">
+          Random
+        </button>
+        <section className="random-selector--movie">{randomMovie.name}</section>
         <table>
           <thead>
             <tr>
@@ -56,7 +49,7 @@ const App = () => {
         </table>
       </main>
     </>
-  )
+  );
 };
 
 export default App;
