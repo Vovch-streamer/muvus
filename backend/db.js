@@ -1,6 +1,5 @@
 import pg from 'pg';
 import { Sequelize } from 'sequelize';
-import { getMovieModel } from './models/Movie.js';
 
 const database = 'muvus';
 const user = 'muvus-app';
@@ -27,30 +26,18 @@ await pool.connect(function (err, client, done) {
             console.log(error);
         }
 
-        initSequelize();
         client.end();
     });
 });
 
-export const getAllMovies = async () => {
-    const sequelize = new Sequelize(sequelizeConnectionString);
-
-    const Movie = await getMovieModel(sequelize);
-    const movies = await Movie.findAll();
-
-    sequelize.close();
-
-    return movies;
-}
-
-const initSequelize = async () => {
+export const initModule = async (initCallback) => {
     const sequelize = new Sequelize(sequelizeConnectionString)
 
     try {
         await sequelize.authenticate();
         console.log('Connection has been established successfully.');
 
-        await getMovieModel(sequelize);
+        await initCallback(sequelize);
 
         await sequelize.sync({ alter: true });
     } catch (error) {
@@ -59,3 +46,5 @@ const initSequelize = async () => {
 
     sequelize.close();
 }
+
+import('./Movies/movies.init.js');
