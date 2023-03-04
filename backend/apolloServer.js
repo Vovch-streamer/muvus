@@ -1,5 +1,5 @@
-import { ApolloServer } from '@apollo/server';
-import {moviesResolver} from './Movies/movies.resolvers.js';
+import { ApolloServer } from "@apollo/server";
+import { moviesResolver } from "./Movies/movies.resolvers.js";
 
 export const typeDefs = `#graphql
     type Movie {
@@ -14,18 +14,16 @@ export const typeDefs = `#graphql
 `;
 
 const resolvers = {
-    Query: {
-        movies: moviesResolver,
-    },
+  Query: {
+    movies: moviesResolver,
+  },
 };
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 export const apolloServer = new ApolloServer({
-    typeDefs,
-    resolvers,
+  typeDefs,
+  resolvers,
 });
 
-
 await apolloServer.start();
-
