@@ -9,7 +9,7 @@ const App = () => {
   const { loading, error, data: moviesData } = useQuery(GET_MOVIES_QUERY);
 
   const selectRandomMovie = useCallback(() => {
-    const randomIndex = Math.ceil(Math.random() * moviesData.movies.length);
+    const randomIndex = Math.floor(Math.random() * moviesData.movies.length);
 
     setRandomMovie(moviesData.movies[randomIndex]);
   }, [moviesData]);
