@@ -1,15 +1,8 @@
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useState, useEffect, useCallback } from 'react'
+import getMoviesQuery from './graphql/queries/getMovies.js'
 
 import './App.css';
-
-const getMoviesQuery = gql`
-  query GetMovies {
-    movies {
-      name
-    }
-  }
-`;
 
 const App = () => {
   const [randomMovie, setRandomMovie] = useState('');
