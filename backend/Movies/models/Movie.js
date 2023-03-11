@@ -1,12 +1,9 @@
 import { DataTypes } from "sequelize";
 
-export const getMovieModel = async (sequelize) => {
-  const Movie = await sequelize.define("Movie", {
+export const defineMovieModel = async (sequelize) =>
+  await sequelize.define("Movie", {
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(500),
       allowNull: false,
     },
   });
-
-  return Movie;
-};

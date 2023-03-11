@@ -1,11 +1,11 @@
 import { Sequelize } from "sequelize";
 import { sequelizeConnectionString } from "../db.js";
-import { getMovieModel } from "./models/Movie.js";
+import { defineMovieModel } from "./models/Movie.js";
 
 export const getAllMovies = async () => {
   const sequelize = new Sequelize(sequelizeConnectionString);
 
-  const Movie = await getMovieModel(sequelize);
+  const Movie = await defineMovieModel(sequelize);
   const movies = await Movie.findAll();
 
   sequelize.close();

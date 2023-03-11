@@ -1,4 +1,4 @@
-import { getMovieModel } from "./models/Movie.js";
+import { defineMovieModel } from "./models/Movie.js";
 import { initModule } from "../db.js";
 
-initModule(getMovieModel);
+initModule(defineMovieModel);

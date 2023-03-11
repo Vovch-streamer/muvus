@@ -3,6 +3,7 @@ import { Sequelize } from "sequelize";
 
 const database = "muvus";
 const user = "muvus-app";
+// TODO: remove from code
 const password = "qwerty";
 const host = "localhost";
 const port = 5432;
@@ -48,3 +49,4 @@ export const initModule = async (initCallback) => {
 };
 
 import("./Movies/movies.init.js");
+import("./Users/users.init.js");
